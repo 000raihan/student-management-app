@@ -59,8 +59,6 @@ export default function Home() {
 
     setAllStudents(allStudent);
 
-    console.log("update students - ", allStudents);
-
     localStorage.setItem("allStudents", JSON.stringify(allStudent || []));
   };
 
@@ -71,10 +69,6 @@ export default function Home() {
 
     let findStudent = allStudent.find((student) => student.roll == roll);
     findStudent.attendance = true;
-
-    // findStudent.attendance = role === "present" ? "present" : "absent";
-
-    // localStorage.setItem("allStudents", JSON.stringify(allStudents));
 
     if (role === "present") {
       findStudent.attendance = "present";
@@ -99,9 +93,6 @@ export default function Home() {
   // // ----------------------------------------------------
 
   const changePresent = (iroll, role) => {
-
-    // console.log("---- i'm called ",iroll,role);
-
   
     let findStudent = allStudents.find((student) => student.roll === iroll);
 
@@ -154,8 +145,6 @@ export default function Home() {
     setAllStudents(allStudent)
 
     localStorage.setItem("allStudents", JSON.stringify(allStudents));
-    // localStorage.setItem("presentStudents", JSON.stringify(presentStudents));
-    // localStorage.setItem("absentStudents", JSON.stringify(absentStudents));
 
     setName("");
     setRoll("");
@@ -168,7 +157,6 @@ export default function Home() {
     setAllStudents(allStudent || []);
   }, []);
 
-  // console.log('present students is : ', presentStudents)
   console.log("all students is : ", allStudents);
 
   // -----------------PRESENT STUDENT RENDERED -------------------
@@ -246,31 +234,9 @@ export default function Home() {
           </Students>
           <Students heading="Present Students">
             {pStudentsRendered}
-            {/* {presentStudents &&
-              presentStudents.map((student) => {
-                return (
-                  <PresentStudent
-                    key={student.roll}
-                    changePresent={changePresent}
-                    name={student && student.name}
-                    roll={student && student.roll}
-                  />
-                );
-              })} */}
           </Students>
           <Students heading="Absent Students">
             {aStudentsRendered}
-            {/* {absentStudents &&
-              absentStudents.map((student) => {
-                return (
-                  <AbsentStudent
-                    key={student.roll}
-                    changePresent={changePresent}
-                    name={student && student.name}
-                    roll={student && student.roll}
-                  />
-                );
-              })} */}
           </Students>
         </div>
       </div>

@@ -3,7 +3,7 @@ import Styles from './Student.module.css'
 
 const SingleStudent = (props) => {
 
-  const {name, roll, attendance, sendPresentOrAbsent,} = props
+  const {name, roll, attendance, sendPresentOrAbsent} = props
 
   return (
     <div className={Styles.studentSection}>
