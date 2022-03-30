@@ -3,6 +3,8 @@ import Styles from "./InputSection.module.css";
 
 const Inputsection = (props) => {
     // console.log("roll is : ",props)
+    console.log("edit : ", props.edit);
+
   return (
     <div className={Styles.InputSection}>
       <div className={Styles.InputCard}>
@@ -20,9 +22,10 @@ const Inputsection = (props) => {
             value={props.roll}
             type="text"
             onChange={(e)=>props.rollChangeHandler(e)}
+            disabled = {props.edit}
           />
         </div>
-        <button onClick={()=>props.addStudent()} className={Styles.button}>Add Student</button>
+        <button onClick={()=> props.edit ? props.updateStudent(props.roll) : props.addStudent()} className={Styles.button}> {props.edit ? "Update Student" : "Add Student"}</button>
       </div>
     </div>
   );

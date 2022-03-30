@@ -11,6 +11,7 @@ export default function Home() {
   const [allStudents, setAllStudents] = useState([]);
   const [presentStudents, setPresentStudents] = useState([]);
   const [absentStudents, setAbsentStudents] = useState([]);
+  const [edit, setEdit] = useState(false)
 
   const [name, setName] = useState();
   const [roll, setRoll] = useState();
@@ -121,7 +122,39 @@ export default function Home() {
 
   }
 
-  console.log("Absent students : ", absentStudents);
+
+  // --------------------------------------------------------
+
+  const sendToEdit =(roll)=>{
+    const findStudent = allStudents.find(student => student.roll == roll)
+
+    setName(findStudent.name)
+    setRoll(findStudent.roll)
+    setEdit(true)
+
+  }
+
+  const updateStudent = ()=>{
+
+    if(name == "" ){
+      alert("Please enter right value");
+      return;
+    }
+
+    let allStudent = allStudents;
+
+    const index = allStudents.findIndex((student) => student.roll == roll);
+    
+    allStudent.splice(index,1,{name:name, roll:roll})
+
+    setName("");
+    setRoll("");
+    setEdit(false)
+  }
+
+
+  // console.log("Absent students : ", absentStudents);
+  // console.log("edit : ", edit);
 
   return (
     <div className={styles.container}>
@@ -135,6 +168,8 @@ export default function Home() {
         nameChangeHandler={nameChangeHandler}
         rollChangeHandler={rollChangeHandler}
         addStudent={addStudentHandler}
+        edit={edit}
+        updateStudent={updateStudent}
       />
 
       <div className={Styles2.SectionContainer}>
@@ -148,6 +183,8 @@ export default function Home() {
                     roll={student.roll}
                     deleteStudent={deleteStudent}
                     sendPresentOrAbsent={sendToPresent}
+                    sendToEdit={sendToEdit}
+                    edit={edit}
                   />
                 );
               })}
