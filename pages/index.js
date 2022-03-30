@@ -24,8 +24,10 @@ export default function Home() {
     setRoll(iRoll);
   };
 
-  const addStudentHandler = () => {
-    if (name == "" || roll == "") {
+  const addStudentHandler = (e) => {
+    e.preventDefault();
+
+    if (name == "" || name == undefined || roll == "" || roll ==undefined) {
       alert("Please enter right value");
       return;
     }
@@ -125,7 +127,8 @@ export default function Home() {
 
   // --------------------------------------------------------
 
-  const updateStudent = () => {
+  const updateStudent = (e, roll) => {
+    e.preventDefault();
     if (name == "") {
       alert("Please enter right value");
       return;
