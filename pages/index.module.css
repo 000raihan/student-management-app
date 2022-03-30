@@ -1,0 +1,16 @@
+.heading{
+    text-align: center;
+    font: bold;
+    font-size: 2.5rem;
+    color: white;
+}
+
+.SectionContainer{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.SectionBlock{
+    display: flex;
+}

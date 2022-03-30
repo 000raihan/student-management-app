@@ -1,0 +1,17 @@
+.SectionHeader{
+    text-align: center;
+    padding: 1rem;
+    min-width: 10rem;
+}
+
+.SectionCard{
+    background-color: white;
+    padding: .2rem 1rem;
+    border-radius: 5px;
+    width:max-content;
+    margin: auto auto;
+ 
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+}

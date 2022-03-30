@@ -1,0 +1,37 @@
+.InputSection{
+    text-align: center;
+    padding: 1rem;
+}
+
+.InputCard{
+    background-color: white;
+    padding: .5rem 2rem;
+    border-radius: 5px;
+    width:max-content;
+    margin: auto auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button {
+    background-color: #009798; /* Green */
+    color: white;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-left: 1rem;
+    cursor: pointer;
+    height: 3rem;
+    border-radius: 5px;
+  }
+
+  .inputBar {
+      padding: .5rem 1rem;
+      margin: 1rem 0;
+      display: block;
+  }
