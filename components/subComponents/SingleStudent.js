@@ -10,9 +10,9 @@ const SingleStudent = (props) => {
         <h4 className={Styles.roll}>Roll : {props.roll}</h4>
         <div className={Styles.studentActions}>
             <button className={Styles.button}>Edit</button>
-            <button className={Styles.button}>Delete</button>
-            <button className={Styles.button}>Present</button>
-            <button className={Styles.button}>Absent</button>
+            <button onClick={()=>props.deleteStudent(props.roll)} className={Styles.button}>Delete</button>
+            <button onClick={()=>props.sendPresentOrAbsent(props.roll,"present")} className={Styles.button}>Present</button>
+            <button onClick={()=>props.sendPresentOrAbsent(props.roll,"absent")} className={Styles.button}>Absent</button>
         </div>
     </div>
   )

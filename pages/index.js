@@ -8,10 +8,9 @@ import PresentStudent from "../components/subComponents/PresentStudent";
 import AbsentStudent from "../components/subComponents/AbsentStudent";
 
 export default function Home() {
-
   const [allStudents, setAllStudents] = useState([]);
   const [presentStudents, setPresentStudents] = useState([]);
-  const [absentStudents, setAbsentStudents] = useState([])
+  const [absentStudents, setAbsentStudents] = useState([]);
 
   const [name, setName] = useState();
   const [roll, setRoll] = useState();
@@ -26,25 +25,103 @@ export default function Home() {
     setRoll(iRoll);
   };
 
-  const addStudentHandler = ()=>{
-    let allStudent = allStudents 
+  const addStudentHandler = () => {
 
-    const findStudent= allStudent.find(student=> student.roll == roll)
-
-    if(findStudent){
-      alert("This roll is exist")
-    }else{
-      allStudent.push({name:name, roll:roll});
-      setAbsentStudents(allStudent);
-  
-      setName("");
-      setRoll("")
+    if(name == "" || roll == ""){
+      alert("Please enter right value");
+      return;
     }
 
+    let allStudent = allStudents;
+
+    const findStudent = allStudent.find((student) => student.roll == roll);
+    const findpresent = presentStudents.find((student) => student.roll == roll);
+    const findAbsent = absentStudents.find((student) => student.roll == roll);
+
+    if (findStudent || findpresent || findAbsent) {
+      alert("This roll is exist");
+      return;
+    } else {
+      allStudent.push({ name: name, roll: roll });
+      setAllStudents(allStudent);
+
+      setName("");
+      setRoll("");
+    }
+
+    return
+  };
+
+  // -------------------------------
+
+  const deleteStudent = (roll) => {
+    const allStudent = allStudents;
+    const updateStudent = allStudent.filter((student) => {
+      return student.roll != roll;
+    });
+
+    setAllStudents(updateStudent);
+  };
+
+  const sendToPresent = (roll,role) => {
+    const allStudent = allStudents;
+    let presentStudent = presentStudents;
+    let absentStudent = absentStudents;
+
+    const findStudent = allStudent.find((student) => student.roll == roll);
+
+    // console.log(findStudent)
+
+    const filteredStudents = allStudent.filter(
+      (student) => student.roll != roll
+    );
+
+    setAllStudents(filteredStudents);
+
+    if(role === "present"){
+      presentStudent.push(findStudent)
+      setPresentStudents(presentStudent);
+
+      return;
+    }
+    if(role === "absent"){
+      absentStudent.push(findStudent)
+      setAbsentStudents(absentStudent)
+
+      return;
+    }
+
+    return;
+ 
+  };
+
+  // ----------------------------------------------------
+
+  const changePresent = (iroll, role) =>{
+    let presentStudent = presentStudents;
+    let absentStudent = absentStudents;
+
+    if(role === "present"){
+      const findPresent = presentStudents.find(student =>student.roll == iroll);
+      const filterPresent = presentStudents.filter(student => student.roll != iroll);
+      absentStudent.push(findPresent);
+      setAbsentStudents(absentStudent);
+      setPresentStudents(filterPresent)
+
+      return
+    }
+
+    if(role === "absent"){
+      const findAbsent = absentStudents.find(student =>student.roll == iroll);
+      const filterAbsent = absentStudents.filter(student => student.roll != iroll);
+      presentStudent.push(findAbsent);
+      setPresentStudents(presentStudent);
+      setAbsentStudents(filterAbsent)
+    }
 
   }
 
-   console.log(allStudents)
+  console.log("Absent students : ", absentStudents);
 
   return (
     <div className={styles.container}>
@@ -57,22 +134,38 @@ export default function Home() {
         roll={roll}
         nameChangeHandler={nameChangeHandler}
         rollChangeHandler={rollChangeHandler}
-        addStudent = {addStudentHandler}
+        addStudent={addStudentHandler}
       />
 
       <div className={Styles2.SectionContainer}>
         <div className={Styles2.SectionBlock}>
           <Students heading="All Students">
-            {allStudents && allStudents.map(student=>{
-              return <SingleStudent name={student.name} roll={student.roll}/>
-            })}
-            
+            {allStudents &&
+              allStudents.map((student) => {
+                return (
+                  <SingleStudent
+                    name={student.name}
+                    roll={student.roll}
+                    deleteStudent={deleteStudent}
+                    sendPresentOrAbsent={sendToPresent}
+                  />
+                );
+              })}
           </Students>
           <Students heading="Present Students">
-            <PresentStudent />
+            {presentStudents &&
+              presentStudents.map((student) => {
+                return (
+                  <PresentStudent changePresent={changePresent} name={student && student.name} roll={student && student.roll} />
+                );
+              })}
           </Students>
           <Students heading="Absent Students">
-            <AbsentStudent />
+              {absentStudents && absentStudents.map(student=>{
+               return <AbsentStudent changePresent={changePresent} name={student && student.name} roll={student && student.roll} />
+              })}
+
+            {/* <AbsentStudent /> */}
           </Students>
           {/* <PresentStudents />
           <AbsentStudent /> */}

@@ -13,7 +13,7 @@ const PresentStudent = (props) => {
         </div>
 
         <div className={Styles.studentActions}>
-          <button className={Styles.button2}>Accidentally <br/> Added</button>
+          <button onClick={()=>{props.changePresent(props.roll, "present")}} className={Styles.button2}>Accidentally <br/> Added</button>
         </div>
       </div>
     </div>
