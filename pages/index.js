@@ -80,14 +80,14 @@ export default function Home() {
     filteredStudents.push(findStudent)
     setAllStudents(filteredStudents);
 
-    // console.log("I'm called & role is : ", role)
 
     if (role === "present") {
    
       presentStudent.push(findStudent);
-      // console.log("I'm present & present is : ", presentStudent)
+
 
       setPresentStudents(presentStudent);
+
 
       return;
     }
