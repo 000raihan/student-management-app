@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
 import Styles2 from "./index.module.css";
-import Inputsection from "../components/inputsection";
-import Students from "../components/Students";
-import SingleStudent from "../components/subComponents/SingleStudent";
-import PresentStudent from "../components/subComponents/PresentStudent";
-import AbsentStudent from "../components/subComponents/AbsentStudent";
+import Inputsection from "../Components/inputsection";
+import Students from "../Components/Students";
+import SingleStudent from "../Components/subComponents/SingleStudent";
+import PresentStudent from "../Components/subComponents/PresentStudent";
+import AbsentStudent from "../Components/subComponents/AbsentStudent";
 
 export default function Home() {
   const [allStudents, setAllStudents] = useState([]);
@@ -42,7 +42,7 @@ export default function Home() {
       alert("This roll is exist");
       return;
     } else {
-      allStudent.push({ name: name, roll: roll });
+      allStudent.push({ name: name, roll: roll, attendance:false });
       setAllStudents(allStudent);
 
       setName("");
@@ -63,21 +63,30 @@ export default function Home() {
     setAllStudents(updateStudent);
   };
 
+  // -----------------
+
   const sendToPresent = (roll, role) => {
     const allStudent = allStudents;
     let presentStudent = presentStudents;
     let absentStudent = absentStudents;
 
-    const findStudent = allStudent.find((student) => student.roll == roll);
+    let findStudent = allStudent.find((student) => student.roll == roll);
+        findStudent.attendance = true
 
-    const filteredStudents = allStudent.filter(
+    let filteredStudents = allStudent.filter(
       (student) => student.roll != roll
     );
 
+    filteredStudents.push(findStudent)
     setAllStudents(filteredStudents);
 
+    // console.log("I'm called & role is : ", role)
+
     if (role === "present") {
+   
       presentStudent.push(findStudent);
+      // console.log("I'm present & present is : ", presentStudent)
+
       setPresentStudents(presentStudent);
 
       return;
@@ -152,6 +161,9 @@ export default function Home() {
     setEdit(false);
   };
 
+  console.log('present students is : ', presentStudents)
+  console.log('all students is : ', allStudents)
+
   return (
     <div className={styles.container}>
       <h1 className={Styles2.heading}>
@@ -178,6 +190,7 @@ export default function Home() {
                     key={student.roll}
                     name={student.name}
                     roll={student.roll}
+                    attendance={student.attendance}
                     deleteStudent={deleteStudent}
                     sendPresentOrAbsent={sendToPresent}
                     sendToEdit={sendToEdit}
