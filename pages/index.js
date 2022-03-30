@@ -11,7 +11,7 @@ export default function Home() {
   const [allStudents, setAllStudents] = useState([]);
   const [presentStudents, setPresentStudents] = useState([]);
   const [absentStudents, setAbsentStudents] = useState([]);
-  const [edit, setEdit] = useState(false)
+  const [edit, setEdit] = useState(false);
 
   const [name, setName] = useState();
   const [roll, setRoll] = useState();
@@ -27,8 +27,7 @@ export default function Home() {
   };
 
   const addStudentHandler = () => {
-
-    if(name == "" || roll == ""){
+    if (name == "" || roll == "") {
       alert("Please enter right value");
       return;
     }
@@ -50,7 +49,7 @@ export default function Home() {
       setRoll("");
     }
 
-    return
+    return;
   };
 
   // -------------------------------
@@ -64,7 +63,7 @@ export default function Home() {
     setAllStudents(updateStudent);
   };
 
-  const sendToPresent = (roll,role) => {
+  const sendToPresent = (roll, role) => {
     const allStudent = allStudents;
     let presentStudent = presentStudents;
     let absentStudent = absentStudents;
@@ -79,64 +78,67 @@ export default function Home() {
 
     setAllStudents(filteredStudents);
 
-    if(role === "present"){
-      presentStudent.push(findStudent)
+    if (role === "present") {
+      presentStudent.push(findStudent);
       setPresentStudents(presentStudent);
 
       return;
     }
-    if(role === "absent"){
-      absentStudent.push(findStudent)
-      setAbsentStudents(absentStudent)
+    if (role === "absent") {
+      absentStudent.push(findStudent);
+      setAbsentStudents(absentStudent);
 
       return;
     }
 
     return;
- 
   };
 
   // ----------------------------------------------------
 
-  const changePresent = (iroll, role) =>{
+  const changePresent = (iroll, role) => {
     let presentStudent = presentStudents;
     let absentStudent = absentStudents;
 
-    if(role === "present"){
-      const findPresent = presentStudents.find(student =>student.roll == iroll);
-      const filterPresent = presentStudents.filter(student => student.roll != iroll);
+    if (role === "present") {
+      const findPresent = presentStudents.find(
+        (student) => student.roll == iroll
+      );
+      const filterPresent = presentStudents.filter(
+        (student) => student.roll != iroll
+      );
       absentStudent.push(findPresent);
       setAbsentStudents(absentStudent);
-      setPresentStudents(filterPresent)
+      setPresentStudents(filterPresent);
 
-      return
+      return;
     }
 
-    if(role === "absent"){
-      const findAbsent = absentStudents.find(student =>student.roll == iroll);
-      const filterAbsent = absentStudents.filter(student => student.roll != iroll);
+    if (role === "absent") {
+      const findAbsent = absentStudents.find(
+        (student) => student.roll == iroll
+      );
+      const filterAbsent = absentStudents.filter(
+        (student) => student.roll != iroll
+      );
       presentStudent.push(findAbsent);
       setPresentStudents(presentStudent);
-      setAbsentStudents(filterAbsent)
+      setAbsentStudents(filterAbsent);
     }
-
-  }
-
+  };
 
   // --------------------------------------------------------
 
-  const sendToEdit =(roll)=>{
-    const findStudent = allStudents.find(student => student.roll == roll)
+  const sendToEdit = (roll) => {
+    const findStudent = allStudents.find((student) => student.roll == roll);
 
-    setName(findStudent.name)
-    setRoll(findStudent.roll)
-    setEdit(true)
+    setName(findStudent.name);
+    setRoll(findStudent.roll);
+    setEdit(true);
+  };
 
-  }
-
-  const updateStudent = ()=>{
-
-    if(name == "" ){
+  const updateStudent = () => {
+    if (name == "") {
       alert("Please enter right value");
       return;
     }
@@ -144,14 +146,13 @@ export default function Home() {
     let allStudent = allStudents;
 
     const index = allStudents.findIndex((student) => student.roll == roll);
-    
-    allStudent.splice(index,1,{name:name, roll:roll})
+
+    allStudent.splice(index, 1, { name: name, roll: roll });
 
     setName("");
     setRoll("");
-    setEdit(false)
-  }
-
+    setEdit(false);
+  };
 
   // console.log("Absent students : ", absentStudents);
   // console.log("edit : ", edit);
@@ -179,6 +180,7 @@ export default function Home() {
               allStudents.map((student) => {
                 return (
                   <SingleStudent
+                    key={student.roll}
                     name={student.name}
                     roll={student.roll}
                     deleteStudent={deleteStudent}
@@ -193,13 +195,26 @@ export default function Home() {
             {presentStudents &&
               presentStudents.map((student) => {
                 return (
-                  <PresentStudent changePresent={changePresent} name={student && student.name} roll={student && student.roll} />
+                  <PresentStudent
+                    key={student.roll}
+                    changePresent={changePresent}
+                    name={student && student.name}
+                    roll={student && student.roll}
+                  />
                 );
               })}
           </Students>
           <Students heading="Absent Students">
-              {absentStudents && absentStudents.map(student=>{
-               return <AbsentStudent changePresent={changePresent} name={student && student.name} roll={student && student.roll} />
+            {absentStudents &&
+              absentStudents.map((student) => {
+                return (
+                  <AbsentStudent
+                    key={student.roll}
+                    changePresent={changePresent}
+                    name={student && student.name}
+                    roll={student && student.roll}
+                  />
+                );
               })}
 
             {/* <AbsentStudent /> */}

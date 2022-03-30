@@ -3,7 +3,7 @@ import Styles from "./InputSection.module.css";
 
 const Inputsection = (props) => {
     // console.log("roll is : ",props)
-    console.log("edit : ", props.edit);
+    // console.log("edit : ", props.edit);
 
   return (
     <div className={Styles.InputSection}>
