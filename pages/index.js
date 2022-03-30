@@ -70,8 +70,6 @@ export default function Home() {
 
     const findStudent = allStudent.find((student) => student.roll == roll);
 
-    // console.log(findStudent)
-
     const filteredStudents = allStudent.filter(
       (student) => student.roll != roll
     );
@@ -154,9 +152,6 @@ export default function Home() {
     setEdit(false);
   };
 
-  // console.log("Absent students : ", absentStudents);
-  // console.log("edit : ", edit);
-
   return (
     <div className={styles.container}>
       <h1 className={Styles2.heading}>
@@ -217,10 +212,7 @@ export default function Home() {
                 );
               })}
 
-            {/* <AbsentStudent /> */}
           </Students>
-          {/* <PresentStudents />
-          <AbsentStudent /> */}
         </div>
       </div>
     </div>
