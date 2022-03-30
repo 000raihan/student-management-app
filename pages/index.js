@@ -80,11 +80,12 @@ export default function Home() {
     filteredStudents.push(findStudent)
     setAllStudents(filteredStudents);
 
+    setName("");
+    setRoll("");
 
     if (role === "present") {
    
       presentStudent.push(findStudent);
-
 
       setPresentStudents(presentStudent);
 
