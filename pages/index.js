@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
 import Styles2 from "./index.module.css";
-import Inputsection from "../components/inputsection";
+import Inputsection from '../components/Inputsection'
 import Students from "../components/Students";
 import SingleStudent from "../components/subComponents/SingleStudent";
 import PresentStudent from "../components/subComponents/PresentStudent";
@@ -162,8 +162,8 @@ export default function Home() {
     setEdit(false);
   };
 
-  console.log('present students is : ', presentStudents)
-  console.log('all students is : ', allStudents)
+  // console.log('present students is : ', presentStudents)
+  // console.log('all students is : ', allStudents)
 
   return (
     <div className={styles.container}>
