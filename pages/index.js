@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
 import Styles2 from "./index.module.css";
-import Inputsection from "../Components/inputsection";
-import Students from "../Components/Students";
-import SingleStudent from "../Components/subComponents/SingleStudent";
-import PresentStudent from "../Components/subComponents/PresentStudent";
-import AbsentStudent from "../Components/subComponents/AbsentStudent";
+import Inputsection from "../components/inputsection";
+import Students from "../components/Students";
+import SingleStudent from "../components/subComponents/SingleStudent";
+import PresentStudent from "../components/subComponents/PresentStudent";
+import AbsentStudent from "../components/subComponents/AbsentStudent";
 
 export default function Home() {
   const [allStudents, setAllStudents] = useState([]);
