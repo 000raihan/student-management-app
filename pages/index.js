@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
 import Styles2 from "./index.module.css";
-import Inputsection from '../components/Inputsection'
+import Inputsection from "../components/Inputsection";
 import Students from "../components/Students";
 import SingleStudent from "../components/subComponents/SingleStudent";
 import PresentStudent from "../components/subComponents/PresentStudent";
@@ -9,8 +9,6 @@ import AbsentStudent from "../components/subComponents/AbsentStudent";
 
 export default function Home() {
   const [allStudents, setAllStudents] = useState([]);
-  const [presentStudents, setPresentStudents] = useState([]);
-  const [absentStudents, setAbsentStudents] = useState([]);
   const [edit, setEdit] = useState(false);
 
   const [name, setName] = useState();
@@ -35,104 +33,93 @@ export default function Home() {
     let allStudent = allStudents;
 
     const findStudent = allStudent.find((student) => student.roll == roll);
-    const findpresent = presentStudents.find((student) => student.roll == roll);
-    const findAbsent = absentStudents.find((student) => student.roll == roll);
 
-    if (findStudent || findpresent || findAbsent) {
+    if (findStudent) {
       alert("This roll is exist");
       return;
     } else {
-      allStudent.push({ name: name, roll: roll, attendance:false });
+      allStudent.push({ name: name, roll: roll, attendance: null });
+
       setAllStudents(allStudent);
+      localStorage.setItem("allStudents", JSON.stringify(allStudent));
 
       setName("");
       setRoll("");
     }
-
     return;
   };
 
   // -------------------------------
 
   const deleteStudent = (roll) => {
-    const allStudent = allStudents;
-    const updateStudent = allStudent.filter((student) => {
-      return student.roll != roll;
-    });
 
-    setAllStudents(updateStudent);
+    let allStudent;
+
+    allStudent = allStudents.filter((student) => student.roll != roll);
+
+    setAllStudents(allStudent);
+
+    console.log("update students - ", allStudents);
+
+    localStorage.setItem("allStudents", JSON.stringify(allStudent || []));
   };
 
   // -----------------
 
   const sendToPresent = (roll, role) => {
     const allStudent = allStudents;
-    let presentStudent = presentStudents;
-    let absentStudent = absentStudents;
 
     let findStudent = allStudent.find((student) => student.roll == roll);
-        findStudent.attendance = true
+    findStudent.attendance = true;
 
-    let filteredStudents = allStudent.filter(
-      (student) => student.roll != roll
-    );
+    // findStudent.attendance = role === "present" ? "present" : "absent";
 
-    filteredStudents.push(findStudent)
+    // localStorage.setItem("allStudents", JSON.stringify(allStudents));
+
+    if (role === "present") {
+      findStudent.attendance = "present";
+    }
+    if (role === "absent") {
+      findStudent.attendance = "absent";
+    }
+
+    let filteredStudents = allStudent.filter((student) => student.roll != roll);
+    filteredStudents.push(findStudent);
     setAllStudents(filteredStudents);
+
+    localStorage.setItem("allStudents", JSON.stringify(allStudents));
+
 
     setName("");
     setRoll("");
 
-    if (role === "present") {
-   
-      presentStudent.push(findStudent);
-
-      setPresentStudents(presentStudent);
-
-
-      return;
-    }
-    if (role === "absent") {
-      absentStudent.push(findStudent);
-      setAbsentStudents(absentStudent);
-
-      return;
-    }
-
     return;
   };
 
-  // ----------------------------------------------------
+  // // ----------------------------------------------------
 
   const changePresent = (iroll, role) => {
-    let presentStudent = presentStudents;
-    let absentStudent = absentStudents;
+
+    // console.log("---- i'm called ",iroll,role);
+
+  
+    let findStudent = allStudents.find((student) => student.roll === iroll);
 
     if (role === "present") {
-      const findPresent = presentStudents.find(
-        (student) => student.roll == iroll
-      );
-      const filterPresent = presentStudents.filter(
-        (student) => student.roll != iroll
-      );
-      absentStudent.push(findPresent);
-      setAbsentStudents(absentStudent);
-      setPresentStudents(filterPresent);
-
-      return;
+      findStudent.attendance = "absent";
     }
 
     if (role === "absent") {
-      const findAbsent = absentStudents.find(
-        (student) => student.roll == iroll
-      );
-      const filterAbsent = absentStudents.filter(
-        (student) => student.roll != iroll
-      );
-      presentStudent.push(findAbsent);
-      setPresentStudents(presentStudent);
-      setAbsentStudents(filterAbsent);
+      findStudent.attendance = "present";
     }
+
+    let filteredStudent = allStudents.filter(student => student.roll != iroll)
+    filteredStudent.push(findStudent)
+
+    setAllStudents(filteredStudent);
+
+    localStorage.setItem("allStudents", JSON.stringify(allStudents || []));
+
   };
 
   // --------------------------------------------------------
@@ -145,6 +132,8 @@ export default function Home() {
     setEdit(true);
   };
 
+  // --------------------------------------------------------
+
   const updateStudent = () => {
     if (name == "") {
       alert("Please enter right value");
@@ -152,18 +141,73 @@ export default function Home() {
     }
 
     let allStudent = allStudents;
+    const student = allStudents.find((student) => student.roll === roll);
 
     const index = allStudents.findIndex((student) => student.roll == roll);
 
-    allStudent.splice(index, 1, { name: name, roll: roll });
+    allStudent.splice(index, 1, {
+      name: name,
+      roll: roll,
+      attendance: student.attendance,
+    });
+
+    setAllStudents(allStudent)
+
+    localStorage.setItem("allStudents", JSON.stringify(allStudents));
+    // localStorage.setItem("presentStudents", JSON.stringify(presentStudents));
+    // localStorage.setItem("absentStudents", JSON.stringify(absentStudents));
 
     setName("");
     setRoll("");
     setEdit(false);
   };
 
+  useEffect(() => {
+    // Update the document title using the browser API
+    const allStudent = JSON.parse(localStorage.getItem("allStudents"));
+    setAllStudents(allStudent || []);
+  }, []);
+
   // console.log('present students is : ', presentStudents)
-  // console.log('all students is : ', allStudents)
+  console.log("all students is : ", allStudents);
+
+  // -----------------PRESENT STUDENT RENDERED -------------------
+
+  const pStudents = allStudents.filter(
+    (student) => student.attendance === "present"
+  );
+  let pStudentsRendered;
+  if (pStudents) {
+    pStudentsRendered = pStudents.map((student) => {
+      return (
+        <PresentStudent
+          key={student.roll}
+          changePresent={changePresent}
+          name={student && student.name}
+          roll={student && student.roll}
+        />
+      );
+    });
+  }
+
+  // -----------------ABSENT STUDENT RENDERED -------------------
+
+  const aStudents = allStudents.filter(
+    (student) => student.attendance === "absent"
+  );
+  let aStudentsRendered;
+  if (aStudents) {
+    aStudentsRendered = aStudents.map((student) => {
+      return (
+        <AbsentStudent
+          key={student.roll}
+          changePresent={changePresent}
+          name={student && student.name}
+          roll={student && student.roll}
+        />
+      );
+    });
+  }
 
   return (
     <div className={styles.container}>
@@ -201,7 +245,8 @@ export default function Home() {
               })}
           </Students>
           <Students heading="Present Students">
-            {presentStudents &&
+            {pStudentsRendered}
+            {/* {presentStudents &&
               presentStudents.map((student) => {
                 return (
                   <PresentStudent
@@ -211,10 +256,11 @@ export default function Home() {
                     roll={student && student.roll}
                   />
                 );
-              })}
+              })} */}
           </Students>
           <Students heading="Absent Students">
-            {absentStudents &&
+            {aStudentsRendered}
+            {/* {absentStudents &&
               absentStudents.map((student) => {
                 return (
                   <AbsentStudent
@@ -224,8 +270,7 @@ export default function Home() {
                     roll={student && student.roll}
                   />
                 );
-              })}
-
+              })} */}
           </Students>
         </div>
       </div>

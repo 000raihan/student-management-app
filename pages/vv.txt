@@ -1,0 +1,322 @@
+import React, { useState, useEffect } from "react";
+import styles from "../styles/Home.module.css";
+import Styles2 from "./index.module.css";
+import Inputsection from "../components/Inputsection";
+import Students from "../components/Students";
+import SingleStudent from "../components/subComponents/SingleStudent";
+import PresentStudent from "../components/subComponents/PresentStudent";
+import AbsentStudent from "../components/subComponents/AbsentStudent";
+
+export default function Home() {
+  const [allStudents, setAllStudents] = useState([]);
+  const [presentStudents, setPresentStudents] = useState([]);
+  const [absentStudents, setAbsentStudents] = useState([]);
+  const [edit, setEdit] = useState(false);
+
+  const [name, setName] = useState();
+  const [roll, setRoll] = useState();
+
+  const nameChangeHandler = (e) => {
+    const iName = e.target.value;
+    setName(iName);
+  };
+
+  const rollChangeHandler = (e) => {
+    const iRoll = e.target.value;
+    setRoll(iRoll);
+  };
+
+  const addStudentHandler = () => {
+    if (name == "" || roll == "") {
+      alert("Please enter right value");
+      return;
+    }
+
+    let allStudent = allStudents;
+
+    const findStudent = allStudent.find((student) => student.roll == roll);
+    const findpresent = presentStudents.find((student) => student.roll == roll);
+    const findAbsent = absentStudents.find((student) => student.roll == roll);
+
+    if (findStudent || findpresent || findAbsent) {
+      alert("This roll is exist");
+      return;
+    } else {
+      allStudent.push({ name: name, roll: roll, attendance: false });
+
+      setAllStudents(allStudent);
+
+      localStorage.setItem("allStudents", JSON.stringify(allStudent));
+
+      setName("");
+      setRoll("");
+    }
+
+    return;
+  };
+
+  // -------------------------------
+
+  const deleteStudent = (roll) => {
+
+    const updateStudent = allStudents.filter((student) => student.roll != roll);
+
+    console.log("update student - ", updateStudent);
+
+    setAllStudents(updateStudent);
+      
+    console.log("--------",allStudents)
+  
+
+    // localStorage.setItem("allStudents", JSON.stringify(allStudents || []));
+
+    const presentStudent = presentStudents.find(
+      (student) => student.roll === roll
+    );
+    const absentStudent = absentStudents.find(
+      (student) => student.roll === roll
+    );
+
+    if (presentStudent) {
+      const updatePresentStudent = presentStudents.filter(
+        (student) => student.roll != roll
+      );
+      setPresentStudents(updatePresentStudent);
+      // localStorage.setItem("presentStudents", JSON.stringify(presentStudents || []));
+    }
+    if (absentStudent) {
+      const updateAbsentStudent = absentStudents.filter(
+        (student) => student.roll != roll
+      );
+      setAbsentStudents(updateAbsentStudent);
+      // localStorage.setItem("absentStudents", JSON.stringify(absentStudents || []));
+    }
+
+
+
+  };
+
+  // -----------------
+
+  const sendToPresent = (roll, role) => {
+  //   const allStudent = allStudents;
+  //   let presentStudent = presentStudents;
+  //   let absentStudent = absentStudents;
+
+  //   let findStudent = allStudent.find((student) => student.roll == roll);
+  //   findStudent.attendance = true;
+  //   // findStudent.attendance = role === "present" ? "present" : "absent";
+
+  //   let filteredStudents = allStudent.filter((student) => student.roll != roll);
+
+  //   filteredStudents.push(findStudent);
+  //   setAllStudents(filteredStudents);
+  //   localStorage.setItem("allStudents", JSON.stringify(allStudents));
+
+  //   setName("");
+  //   setRoll("");
+
+  //   if (role === "present") {
+  //     presentStudent.push(findStudent);
+
+  //     setPresentStudents(presentStudent);
+  //     localStorage.setItem("presentStudents", JSON.stringify(presentStudents));
+
+  //     return;
+  //   }
+  //   if (role === "absent") {
+  //     absentStudent.push(findStudent);
+  //     setAbsentStudents(absentStudent);
+  //     localStorage.setItem("absentStudents", JSON.stringify(absentStudents));
+  //     return;
+  //   }
+
+  //   return;
+  // };
+
+  // // ----------------------------------------------------
+
+  // const changePresent = (iroll, role) => {
+  //   let presentStudent = presentStudents;
+  //   let absentStudent = absentStudents;
+
+  //   if (role === "present") {
+  //     const findPresent = presentStudents.find(
+  //       (student) => student.roll == iroll
+  //     );
+  //     const filterPresent = presentStudents.filter(
+  //       (student) => student.roll != iroll
+  //     );
+  //     absentStudent.push(findPresent);
+  //     setAbsentStudents(absentStudent);
+
+  //     setPresentStudents(filterPresent);
+  //     localStorage.setItem("absentStudents", JSON.stringify(absentStudents));
+  //     // localStorage.setItem("presentStudents", JSON.stringify(presentStudents));
+
+  //     return;
+  //   }
+
+  //   if (role === "absent") {
+  //     const findAbsent = absentStudents.find(
+  //       (student) => student.roll == iroll
+  //     );
+  //     const filterAbsent = absentStudents.filter(
+  //       (student) => student.roll != iroll
+  //     );
+  //     presentStudent.push(findAbsent);
+  //     setPresentStudents(presentStudent);
+
+  //     setAbsentStudents(filterAbsent);
+  //     localStorage.setItem("presentStudents", JSON.stringify(presentStudents));
+  //     // localStorage.setItem("absentStudents", JSON.stringify(absentStudents));
+  //   }
+  };
+
+  // --------------------------------------------------------
+
+  const sendToEdit = (roll) => {
+    // const findStudent = allStudents.find((student) => student.roll == roll);
+
+    // setName(findStudent.name);
+    // setRoll(findStudent.roll);
+    // setEdit(true);
+  };
+
+
+   // --------------------------------------------------------
+
+  const updateStudent = () => {
+    // if (name == "") {
+    //   alert("Please enter right value");
+    //   return;
+    // }
+
+    // let allStudent = allStudents;
+    // const student = allStudents.find((student) => student.roll === roll);
+
+    // const index = allStudents.findIndex((student) => student.roll == roll);
+
+    // allStudent.splice(index, 1, {
+    //   name: name,
+    //   roll: roll,
+    //   attendance: student.attendance,
+    // });
+
+    // const presentStudent = presentStudents.find(
+    //   (student) => student.roll === roll
+    // );
+    // const absentStudent = absentStudents.find(
+    //   (student) => student.roll === roll
+    // );
+
+    // if (presentStudent) {
+    //   const presentIndex = presentStudents.findIndex(
+    //     (student) => student.roll == roll
+    //   );
+    //   presentStudents.splice(presentIndex, 1, {
+    //     name: name,
+    //     roll: roll,
+    //     attendance: true,
+    //   });
+    // }
+    // if (absentStudent) {
+    //   const absentIndex = absentStudents.findIndex(
+    //     (student) => student.roll == roll
+    //   );
+    //   absentStudents.splice(absentIndex, 1, {
+    //     name: name,
+    //     roll: roll,
+    //     attendance: true,
+    //   });
+    // }
+
+    // localStorage.setItem("allStudents", JSON.stringify(allStudents));
+    // localStorage.setItem("presentStudents", JSON.stringify(presentStudents));
+    // localStorage.setItem("absentStudents", JSON.stringify(absentStudents));
+
+    // setName("");
+    // setRoll("");
+    // setEdit(false);
+  };
+
+  useEffect(() => {
+    // Update the document title using the browser API
+    const allStudent = JSON.parse(localStorage.getItem("allStudents"));
+    setAllStudents(allStudent || []);
+    // console.log("All students : ", allStudent);
+    const presentStudent = JSON.parse(localStorage.getItem("presentStudents"));
+    setPresentStudents(presentStudent || []);
+    const absentStudent = JSON.parse(localStorage.getItem("absentStudents"));
+    setAbsentStudents(absentStudent || []);
+  }, []);
+
+  // console.log('present students is : ', presentStudents)
+  console.log('all students is : ', allStudents)
+
+  return (
+    <div className={styles.container}>
+      <h1 className={Styles2.heading}>
+        STUDENT PRESENT ABSENT MANGED APPLICATION
+      </h1>
+
+      <Inputsection
+        name={name}
+        roll={roll}
+        nameChangeHandler={nameChangeHandler}
+        rollChangeHandler={rollChangeHandler}
+        addStudent={addStudentHandler}
+        edit={edit}
+        updateStudent={updateStudent}
+      />
+
+      <div className={Styles2.SectionContainer}>
+        <div className={Styles2.SectionBlock}>
+          <Students heading="All Students">
+            {allStudents &&
+              allStudents.map((student) => {
+                return (
+                  <SingleStudent
+                    key={student.roll}
+                    name={student.name}
+                    roll={student.roll}
+                    attendance={student.attendance}
+                    deleteStudent={deleteStudent}
+                    sendPresentOrAbsent={sendToPresent}
+                    sendToEdit={sendToEdit}
+                    edit={edit}
+                  />
+                );
+              })}
+          </Students>
+          <Students heading="Present Students">
+            {presentStudents &&
+              presentStudents.map((student) => {
+                return (
+                  <PresentStudent
+                    key={student.roll}
+                    changePresent={changePresent}
+                    name={student && student.name}
+                    roll={student && student.roll}
+                  />
+                );
+              })}
+          </Students>
+          <Students heading="Absent Students">
+            {absentStudents &&
+              absentStudents.map((student) => {
+                return (
+                  <AbsentStudent
+                    key={student.roll}
+                    changePresent={changePresent}
+                    name={student && student.name}
+                    roll={student && student.roll}
+                  />
+                );
+              })}
+          </Students>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -3,19 +3,18 @@ import Styles from './Student.module.css'
 
 const AbsentStudent = (props) => {
 
-    const [name, setName] = useState();
-    const [roll, setRoll] = useState()
+    const {name, roll, changePresent}= props
 
   return (
     <div className={Styles.studentSection}>
       <div className={Styles.nameWarpper}>
         <div>
-          <h4 className={Styles.name}>Name : {props.name} </h4>
-          <h4 className={Styles.roll}>Roll : {props.roll} </h4>
+          <h4 className={Styles.name}>Name : {name} </h4>
+          <h4 className={Styles.roll}>Roll : {roll} </h4>
         </div>
 
         <div className={Styles.studentActions}>
-          <button onClick={()=>{props.changePresent(props.roll, "absent")}} className={Styles.button2}>Accidentally <br/> Added</button>
+          <button onClick={()=>{changePresent(roll, "absent")}} className={Styles.button2}>Accidentally <br/> Added</button>
         </div>
       </div>
     </div>
